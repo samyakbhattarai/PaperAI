@@ -1,22 +1,22 @@
-import nltk
-from nltk.corpus import stopwords
-from nltk import word_tokenize,pos_tag, ne_chunk
 import re
-from nltk.stem import PorterStemmer
+from pathlib import Path
+
 import matplotlib.pyplot as plt
+import nltk
+from nltk import ne_chunk, pos_tag, word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+
 
 porter = PorterStemmer()
-sentence = """The world is a very beautiful place, but the world I want to create is not
-        this. So lets just work harder for a new world"""
 
+# Reading files
+text_path = Path(__file__).resolve().parent / "a_text_file.txt"
+if not text_path.exists():
+    raise FileNotFoundError(f"Text file not found: {text_path}")
 
-
-#Reading files 
-file = open("a_text_file.txt", "r")
-every_thing = ""
-word = []
-for ch in file:
-    every_thing+=ch
+with open(text_path, "r", encoding="utf-8") as file:
+    every_thing = file.read()
 
 #Cleaning text
 
@@ -43,10 +43,8 @@ fdist = nltk.FreqDist(filtered)
 
 print(fdist.most_common(5))
 
-fdist.plot(10, title="most frequent")
+fdist.plot(10)
 plt.show()
-
-#Basic NLP
 
 
 #Task:
