@@ -1,21 +1,22 @@
 from pathlib import Path
 from pypdf import PdfReader
 
-#Task: Import a file and print the text
-pdf_file_name = "paper.pdf"
 
-pdf_path = Path(__file__).resolve().parent / pdf_file_name
-if not pdf_path.exists():
-    raise FileNotFoundError(f"PDF not found: {pdf_path}")
+def read_pdf(pdf_file_name):
+    pdf_path = Path(pdf_file_name).expanduser()
+    if not pdf_path.is_absolute():
+        pdf_path = Path.cwd() / pdf_path
 
-reader = PdfReader(str(pdf_path))
-total_pages = len(reader.pages)
-i = 0
-all_text=""
-while(i!=total_pages):
-    page=  reader.pages[i]
-    text = page.extract_text()
-    all_text += text + '\n'
-    i+=1
+    if not pdf_path.exists():
+        raise FileNotFoundError(f"PDF not found: {pdf_path}")
 
-print(all_text)
+    reader = PdfReader(str(pdf_path))
+    total_pages = len(reader.pages)
+    i = 0
+    all_text=""
+    while(i!=total_pages):
+        page=  reader.pages[i]
+        text = page.extract_text()
+        all_text += text + '\n'
+        i+=1
+    return all_text

@@ -10,15 +10,13 @@ from nltk.stem import PorterStemmer
 
 porter = PorterStemmer()
 
-# Reading files
-text_path = Path(__file__).resolve().parent / "a_text_file.txt"
-if not text_path.exists():
-    raise FileNotFoundError(f"Text file not found: {text_path}")
+def read_text_file(txt_file_name: str = "a_text_file.txt") -> str:
+    """Read a text file from the Text_Processing folder."""
+    txt_path = Path(__file__).resolve().parent / txt_file_name
+    if not txt_path.exists():
+        raise FileNotFoundError(f"Text file not found: {txt_path}")
+    return txt_path.read_text(encoding="utf-8")
 
-with open(text_path, "r", encoding="utf-8") as file:
-    every_thing = file.read()
-
-#Cleaning text
 
 def clean_text(text: str) -> str:
     """Clean text using regex: lower-case, strip, remove non-alphanumeric except spaces."""
@@ -32,19 +30,31 @@ def clean_text(text: str) -> str:
     text = re.sub(r'\s+', ' ', text)
     return text
 
-every_thing = clean_text(every_thing)
+def get_common_graph(all_text):
+# Reading files
+# text_path = Path(__file__).resolve().parent / "a_text_file.txt"
+# if not text_path.exists():
+#     raise FileNotFoundError(f"Text file not found: {text_path}")
 
-tokens = word_tokenize(every_thing)
+# with open(text_path, "r", encoding="utf-8") as file:
+#     every_thing = file.read()
 
-stop_words = set(stopwords.words('english'))
-filtered = [word for word in tokens if word not in stop_words and word.isalpha()]
+#Cleaning text
+    every_thing = all_text
 
-fdist = nltk.FreqDist(filtered)
+    every_thing = clean_text(every_thing)
 
-print(fdist.most_common(5))
+    tokens = word_tokenize(every_thing)
 
-fdist.plot(10)
-plt.show()
+    stop_words = set(stopwords.words('english'))
+    filtered = [word for word in tokens if word not in stop_words and word.isalpha()]
+
+    fdist = nltk.FreqDist(filtered)
+
+    print(fdist.most_common(5))
+
+    fdist.plot(10)
+    plt.show()
 
 
 #Task:
